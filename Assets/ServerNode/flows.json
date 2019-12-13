@@ -1,0 +1,613 @@
+[
+    {
+        "id": "26695f98.23d7d",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "480726a5.4aa548",
+        "type": "subflow",
+        "name": "Data to Cloud",
+        "info": "",
+        "category": "",
+        "in": [],
+        "out": [],
+        "env": [],
+        "color": "#DDAA99"
+    },
+    {
+        "id": "4a58634e.3b1ccc",
+        "type": "postgresdb",
+        "z": "",
+        "hostname": "52.157.73.154",
+        "port": "5432",
+        "db": "smart_local",
+        "ssl": false
+    },
+    {
+        "id": "771f22cc.b5f00c",
+        "type": "websocket-listener",
+        "z": "",
+        "path": "/ws/example",
+        "wholemsg": "false"
+    },
+    {
+        "id": "f2395b0d.74dd68",
+        "type": "websocket-client",
+        "z": "",
+        "path": "ws://192.168.1.8:1337",
+        "tls": "",
+        "wholemsg": "false"
+    },
+    {
+        "id": "3f6dc221.1c98fe",
+        "type": "websocket-client",
+        "path": "wss://echo.websocket.org",
+        "wholemsg": "false"
+    },
+    {
+        "id": "16200a97.2025f5",
+        "type": "debug",
+        "z": "480726a5.4aa548",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "x": 830,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "6f2d3e62.a54d4",
+        "type": "inject",
+        "z": "480726a5.4aa548",
+        "name": "",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "1",
+        "x": 140,
+        "y": 560,
+        "wires": [
+            [
+                "c703f12.a85c91",
+                "8a0e5b66.3408f8",
+                "6b0e154b.287bbc",
+                "4a126898.fc8638",
+                "360727d0.1a2288",
+                "73f124c5.e8444c",
+                "feac0943.f98198",
+                "92579bdc.c9f4a8",
+                "4a3183e6.edb01c",
+                "df61a59a.c687b8",
+                "b6102393.ee2c5"
+            ]
+        ]
+    },
+    {
+        "id": "a7486bbc.e37f38",
+        "type": "postgres",
+        "z": "480726a5.4aa548",
+        "postgresdb": "4a58634e.3b1ccc",
+        "name": "",
+        "output": true,
+        "perrow": false,
+        "outputs": 1,
+        "x": 740,
+        "y": 560,
+        "wires": [
+            [
+                "e6ca4847.dd59f8"
+            ]
+        ]
+    },
+    {
+        "id": "62605354.a864cc",
+        "type": "function",
+        "z": "480726a5.4aa548",
+        "name": "",
+        "func": "msg.payload = \"insert into _data(value,timedata,_sensor_id) values( \"+ msg.temperature +\" , 'NOW()', 1);\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 390,
+        "y": 140,
+        "wires": [
+            [
+                "a7486bbc.e37f38"
+            ]
+        ]
+    },
+    {
+        "id": "e6ca4847.dd59f8",
+        "type": "json",
+        "z": "480726a5.4aa548",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 770,
+        "y": 440,
+        "wires": [
+            [
+                "16200a97.2025f5"
+            ]
+        ]
+    },
+    {
+        "id": "c703f12.a85c91",
+        "type": "random",
+        "z": "480726a5.4aa548",
+        "name": "Temperature1",
+        "low": "20",
+        "high": "21",
+        "inte": "false",
+        "property": "temperature",
+        "x": 400,
+        "y": 100,
+        "wires": [
+            [
+                "62605354.a864cc"
+            ]
+        ]
+    },
+    {
+        "id": "34a173bd.0241ec",
+        "type": "function",
+        "z": "480726a5.4aa548",
+        "name": "",
+        "func": "msg.payload = \"insert into _data(value,timedata,_sensor_id) values( \"+ msg.pressure +\" , 'NOW()', 2);\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 390,
+        "y": 220,
+        "wires": [
+            [
+                "a7486bbc.e37f38"
+            ]
+        ]
+    },
+    {
+        "id": "8a0e5b66.3408f8",
+        "type": "random",
+        "z": "480726a5.4aa548",
+        "name": "Pressure1",
+        "low": "52",
+        "high": "54",
+        "inte": "false",
+        "property": "pressure",
+        "x": 390,
+        "y": 180,
+        "wires": [
+            [
+                "34a173bd.0241ec"
+            ]
+        ]
+    },
+    {
+        "id": "4449edf6.88eac4",
+        "type": "function",
+        "z": "480726a5.4aa548",
+        "name": "",
+        "func": "msg.payload = \"insert into _data(value,timedata,_sensor_id) values( \"+ msg.pressure +\" , 'NOW()', 3);\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 390,
+        "y": 300,
+        "wires": [
+            [
+                "a7486bbc.e37f38"
+            ]
+        ]
+    },
+    {
+        "id": "6b0e154b.287bbc",
+        "type": "random",
+        "z": "480726a5.4aa548",
+        "name": "Pressure2",
+        "low": "50",
+        "high": "55",
+        "inte": "false",
+        "property": "pressure",
+        "x": 390,
+        "y": 260,
+        "wires": [
+            [
+                "4449edf6.88eac4"
+            ]
+        ]
+    },
+    {
+        "id": "6d3f3285.847bcc",
+        "type": "function",
+        "z": "480726a5.4aa548",
+        "name": "",
+        "func": "msg.payload = \"insert into _data(value,timedata,_sensor_id) values( \"+ msg.pressure +\" , 'NOW()', 4);\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 390,
+        "y": 380,
+        "wires": [
+            [
+                "a7486bbc.e37f38"
+            ]
+        ]
+    },
+    {
+        "id": "4a126898.fc8638",
+        "type": "random",
+        "z": "480726a5.4aa548",
+        "name": "Pressure3",
+        "low": "50",
+        "high": "60",
+        "inte": "false",
+        "property": "pressure",
+        "x": 390,
+        "y": 340,
+        "wires": [
+            [
+                "6d3f3285.847bcc"
+            ]
+        ]
+    },
+    {
+        "id": "9bbd3379.85389",
+        "type": "function",
+        "z": "480726a5.4aa548",
+        "name": "",
+        "func": "msg.payload = \"insert into _data(value,timedata,_sensor_id) values( \"+ msg.pressure +\" , 'NOW()', 5);\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 390,
+        "y": 460,
+        "wires": [
+            [
+                "a7486bbc.e37f38"
+            ]
+        ]
+    },
+    {
+        "id": "360727d0.1a2288",
+        "type": "random",
+        "z": "480726a5.4aa548",
+        "name": "Pressure4",
+        "low": "40",
+        "high": "50",
+        "inte": "false",
+        "property": "pressure",
+        "x": 390,
+        "y": 420,
+        "wires": [
+            [
+                "9bbd3379.85389"
+            ]
+        ]
+    },
+    {
+        "id": "27581116.9d4ece",
+        "type": "function",
+        "z": "480726a5.4aa548",
+        "name": "",
+        "func": "msg.payload = \"insert into _data(value,timedata,_sensor_id) values( \"+ msg.ph +\" , 'NOW()', 6);\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 390,
+        "y": 580,
+        "wires": [
+            [
+                "a7486bbc.e37f38"
+            ]
+        ]
+    },
+    {
+        "id": "73f124c5.e8444c",
+        "type": "random",
+        "z": "480726a5.4aa548",
+        "name": "pH1",
+        "low": "7.6",
+        "high": "8.9",
+        "inte": "false",
+        "property": "ph",
+        "x": 370,
+        "y": 540,
+        "wires": [
+            [
+                "27581116.9d4ece"
+            ]
+        ]
+    },
+    {
+        "id": "2ca114f0.e375bc",
+        "type": "function",
+        "z": "480726a5.4aa548",
+        "name": "",
+        "func": "msg.payload = \"insert into _data(value,timedata,_sensor_id) values( \"+ msg.ph +\" , 'NOW()', 7);\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 390,
+        "y": 660,
+        "wires": [
+            [
+                "a7486bbc.e37f38"
+            ]
+        ]
+    },
+    {
+        "id": "feac0943.f98198",
+        "type": "random",
+        "z": "480726a5.4aa548",
+        "name": "pH2",
+        "low": "6.9",
+        "high": "7.5",
+        "inte": "false",
+        "property": "ph",
+        "x": 370,
+        "y": 620,
+        "wires": [
+            [
+                "2ca114f0.e375bc"
+            ]
+        ]
+    },
+    {
+        "id": "82d58aa2.2f26c8",
+        "type": "function",
+        "z": "480726a5.4aa548",
+        "name": "",
+        "func": "msg.payload = \"insert into _data(value,timedata,_sensor_id) values( \"+ msg.flow +\" , 'NOW()', 8);\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 390,
+        "y": 800,
+        "wires": [
+            [
+                "a7486bbc.e37f38"
+            ]
+        ]
+    },
+    {
+        "id": "92579bdc.c9f4a8",
+        "type": "random",
+        "z": "480726a5.4aa548",
+        "name": "WaterFlow1",
+        "low": "40",
+        "high": "50",
+        "inte": "false",
+        "property": "flow",
+        "x": 390,
+        "y": 760,
+        "wires": [
+            [
+                "82d58aa2.2f26c8"
+            ]
+        ]
+    },
+    {
+        "id": "2b7db478.d3dd1c",
+        "type": "function",
+        "z": "480726a5.4aa548",
+        "name": "",
+        "func": "msg.payload = \"insert into _data(value,timedata,_sensor_id) values( \"+ msg.flow +\" , 'NOW()', 9);\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 390,
+        "y": 880,
+        "wires": [
+            [
+                "a7486bbc.e37f38"
+            ]
+        ]
+    },
+    {
+        "id": "4a3183e6.edb01c",
+        "type": "random",
+        "z": "480726a5.4aa548",
+        "name": "WaterFlow2",
+        "low": "30",
+        "high": "40",
+        "inte": "false",
+        "property": "flow",
+        "x": 390,
+        "y": 840,
+        "wires": [
+            [
+                "2b7db478.d3dd1c"
+            ]
+        ]
+    },
+    {
+        "id": "bb9923b5.eeb",
+        "type": "function",
+        "z": "480726a5.4aa548",
+        "name": "",
+        "func": "msg.payload = \"insert into _data(value,timedata,_sensor_id) values( \"+ msg.cond +\" , 'NOW()', 10);\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 390,
+        "y": 1000,
+        "wires": [
+            [
+                "a7486bbc.e37f38"
+            ]
+        ]
+    },
+    {
+        "id": "df61a59a.c687b8",
+        "type": "random",
+        "z": "480726a5.4aa548",
+        "name": "Conductivity1",
+        "low": "7",
+        "high": "9",
+        "inte": "false",
+        "property": "cond",
+        "x": 400,
+        "y": 960,
+        "wires": [
+            [
+                "bb9923b5.eeb"
+            ]
+        ]
+    },
+    {
+        "id": "a0a3a7ff.71c6f8",
+        "type": "function",
+        "z": "480726a5.4aa548",
+        "name": "",
+        "func": "msg.payload = \"insert into _data(value,timedata,_sensor_id) values( \"+ msg.cond +\" , 'NOW()', 11);\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 390,
+        "y": 1080,
+        "wires": [
+            [
+                "a7486bbc.e37f38"
+            ]
+        ]
+    },
+    {
+        "id": "b6102393.ee2c5",
+        "type": "random",
+        "z": "480726a5.4aa548",
+        "name": "Conductivity2",
+        "low": "4",
+        "high": "5",
+        "inte": "false",
+        "property": "cond",
+        "x": 400,
+        "y": 1040,
+        "wires": [
+            [
+                "a0a3a7ff.71c6f8"
+            ]
+        ]
+    },
+    {
+        "id": "78b34fc8.dc1cc",
+        "type": "http in",
+        "z": "26695f98.23d7d",
+        "name": "",
+        "url": "/auth",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 240,
+        "y": 120,
+        "wires": [
+            [
+                "4e60de1f.04bce",
+                "4d8fd316.c8beec"
+            ]
+        ]
+    },
+    {
+        "id": "5b218a07.4a3a64",
+        "type": "http response",
+        "z": "26695f98.23d7d",
+        "name": "",
+        "statusCode": "",
+        "headers": {
+            "content-type": "application/json"
+        },
+        "x": 810,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "4d8fd316.c8beec",
+        "type": "function",
+        "z": "26695f98.23d7d",
+        "name": "",
+        "func": "var user = {\n    \"username\" : \"admin\",\n    \"password\" : \"admin\",\n}\n\nif (msg.payload.username == user.username && msg.payload.password == user.password){\n    msg.statusCode = 200;\n    msg.payload = {\n        \"token\":\"3V8F0b8pLqQdOVGH6dnZTzoXiK4JjRY4TeRg\"\n    }\n    console.log(\"Connected!\");\n}\nelse{\n    msg.statusCode = 400;\n    msg.payload = {\n        \"name\": \"Unauthorized\",\n    }\n    console.log(\"Unauthorized!\");\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 570,
+        "y": 120,
+        "wires": [
+            [
+                "5b218a07.4a3a64"
+            ]
+        ]
+    },
+    {
+        "id": "5d1a741c.d24dec",
+        "type": "http in",
+        "z": "26695f98.23d7d",
+        "name": "",
+        "url": "/login",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 250,
+        "y": 300,
+        "wires": [
+            [
+                "57006884.458a98",
+                "19e9cc4f.fc9a74"
+            ]
+        ]
+    },
+    {
+        "id": "6378e55c.cfe8cc",
+        "type": "http response",
+        "z": "26695f98.23d7d",
+        "name": "",
+        "statusCode": "",
+        "headers": {
+            "content-type": "application/json"
+        },
+        "x": 810,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "19e9cc4f.fc9a74",
+        "type": "function",
+        "z": "26695f98.23d7d",
+        "name": "",
+        "func": "var token = \"3V8F0b8pLqQdOVGH6dnZTzoXiK4JjRY4TeRg\";\nvar avatar = \"https://cdn3.iconfinder.com/data/icons/avatars-15/64/_Ninja-2-512.png\";\n\nvar user = {\n    \"Name\" : \"khalil\",\n    \"Username\" : \"Admin\",\n    \"Avatar\" : avatar,\n    \"Email\": \"admin@taktak.tn\",\n    \"Token\": token\n}\n\n\nif(msg.payload.token == token)\n    msg.payload = user\nelse \n    msg.payload = notfound\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 550,
+        "y": 300,
+        "wires": [
+            [
+                "6378e55c.cfe8cc"
+            ]
+        ]
+    },
+    {
+        "id": "57006884.458a98",
+        "type": "debug",
+        "z": "26695f98.23d7d",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 550,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "4e60de1f.04bce",
+        "type": "debug",
+        "z": "26695f98.23d7d",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 530,
+        "y": 220,
+        "wires": []
+    }
+]
